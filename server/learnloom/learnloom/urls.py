@@ -32,4 +32,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
     path('instructor/', include('InstructorApp.urls')),
+    path('course/', include('CourseApp.urls')),
+    path('enroll/', include('EnrollApp.urls')),
 ]

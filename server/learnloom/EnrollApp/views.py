@@ -4,28 +4,26 @@ from django.shortcuts import render
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Course
+from .models import Enroll
 
 @csrf_exempt  # Only for development; remove in production and use proper authentication.
-def add_course(request):
+def add_enrollment(request):
     if request.method == 'POST':
         try:
             # Parse JSON data from request body
             data = json.loads(request.body.decode('utf-8'))
 
-            # Create a new Course instance
-            course = Course(
-                instructor_id=data.get('instructor'),  # Assuming 'instructor' is the instructor ID
-                title=data.get('title'),
-                description=data.get('description'),
-                image=data.get('image'),
+            # Create a new Enroll instance
+            enrollment = Enroll(
+                user_id=data.get('user'),      # Assuming 'user' is the user ID
+                course_id=data.get('course'),  # Assuming 'course' is the course ID
             )
 
-            # Save the course to the database
-            course.save()
+            # Save the enrollment to the database
+            enrollment.save()
 
             # Return a success response
-            return JsonResponse({'message': 'Course added successfully'})
+            return JsonResponse({'message': 'Enrollment added successfully'})
 
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
