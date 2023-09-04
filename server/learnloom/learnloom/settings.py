@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o!&=e_81n=mw=p)$fmkyll_$2$0l+7dzv+%ih7k%@s!p*sq^%9'
+SECRET_KEY = 'django-insecure-l)0br-5%t5*hd^)tv0)^9rp$4kxri448dzbq=@p0q2drs8y^o1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'user',
+    'InstructorApp',
 ]
 
 MIDDLEWARE = [
@@ -75,14 +77,15 @@ WSGI_APPLICATION = 'learnloom.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'learnloom',
-        'USER': 'postgres',
-        'PASSWORD': 'afroz',
-        'HOST': 'localhost',  # Set to the database server's host, e.g., 'localhost'
-        'PORT': '',           # Set to the database server's port, leave empty for default
+        'USER': 'root',
+        'PASSWORD': 'afroz_081002_@_mysql',
+        'HOST': 'localhost',  # Change to your MySQL server host if it's not local
+        'PORT': '3306',       # Default MySQL port
     }
 }
+
 
 
 # Password validation
