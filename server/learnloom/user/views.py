@@ -32,3 +32,32 @@ def register_user(request):
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+# user login route
+@csrf_exempt  # Only for development; remove in production and use proper authentication.
+def user_login(request):
+    if request.method == 'POST':
+        try:
+            # Parse JSON data from request body
+            data = json.loads(request.body.decode('utf-8'))
+
+            # Retrieve the user by email and password
+            user = User.objects.filter(email=data.get('email'), password=data.get('password')).first()
+
+            if user:
+                # User exists, return user data
+                user_data = {
+                    'id': user.id,
+                    'username': user.username,
+                    'email': user.email,
+                    'role': user.role,
+                    'isenroll': user.isenroll,
+                }
+                return JsonResponse(user_data)
+            else:
+                return JsonResponse({'error': 'User not found'}, status=404)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
