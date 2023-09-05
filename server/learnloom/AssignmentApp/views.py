@@ -66,3 +66,29 @@ def get_assignments_for_course(request, course_id, enroll_date):
             return JsonResponse([], safe=False)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@csrf_exempt  # Only for development; remove in production and use proper authentication.
+def get_assignments_by_course(request, course_id):
+    if request.method == 'GET':
+        try:
+            # Retrieve assignments for the course
+            assignments = Assignment.objects.filter(course_id=course_id)
+            assignments_data = []
+
+            for assignment in assignments:
+                assignment_data = {
+                    'id': assignment.id,
+                    'course': assignment.course_id,
+                    'start_date': assignment.start_date.strftime('%Y-%m-%d %H:%M:%S'),
+                    'end_date': assignment.end_date.strftime('%Y-%m-%d %H:%M:%S'),
+                    'title': assignment.title,
+                    'description': assignment.description,
+                }
+                assignments_data.append(assignment_data)
+
+            return JsonResponse(assignments_data, safe=False)
+
+        except Assignment.DoesNotExist:
+            return JsonResponse([], safe=False)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)

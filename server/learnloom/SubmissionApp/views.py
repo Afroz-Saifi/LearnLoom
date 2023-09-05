@@ -31,3 +31,29 @@ def add_submission(request):
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+@csrf_exempt  # Only for development; remove in production and use proper authentication.
+def get_submissions_by_assignment(request, assignment_id):
+    if request.method == 'GET':
+        try:
+            # Retrieve submissions for the assignment
+            submissions = Submission.objects.filter(assignment_id=assignment_id)
+            submissions_data = []
+
+            for submission in submissions:
+                submission_data = {
+                    'id': submission.id,
+                    'student': submission.student_id,
+                    'assignment': submission.assignment_id,
+                    'submissionLink': submission.submissionLink,
+                    'username': submission.username,
+                }
+                submissions_data.append(submission_data)
+
+            return JsonResponse(submissions_data, safe=False)
+
+        except Submission.DoesNotExist:
+            return JsonResponse([], safe=False)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
